@@ -72,6 +72,6 @@ construct, add a dateFormat constructor-arg, e.g.:
 
     The default dateFormat is "yyyy/MM/dd" (e.g. 2012/01/13). For more details 
 on supported date format patterns, consult the 
-{{{http://joda-time.sourceforge.net/apidocs/org/joda/time/format/DateTimeFormat.html#forPattern%28java.lang.String%29}joda-time DateTimeFormat} 
+{{{http://joda-time.sourceforge.net/apidocs/org/joda/time/format/DateTimeFormat.html#forPattern%28java.lang.String%29}joda-time DateTimeFormat}} 
 documentation.
 

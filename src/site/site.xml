@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="MediaShelf fedora-client">
+<project name="MediaShelf uuid-datepath-idmapper">
   <version position="left" />
   <bannerLeft>
-    <name>MediaShelf uuid-datepath-idmapper</name>
+    <name>uuid-datepath-idmapper</name>
     <src>images/mediashelf-logo.png</src>
     <href>.</href>
   </bannerLeft>
