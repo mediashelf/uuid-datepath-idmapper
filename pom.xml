@@ -1,13 +1,19 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
-
+  
+  <parent>
+    <groupId>org.sonatype.oss</groupId>
+    <artifactId>oss-parent</artifactId>
+    <version>7</version>
+  </parent>
+  
   <groupId>com.yourmediashelf.fedora.akubra</groupId>
   <artifactId>uuid-datepath-idmapper</artifactId>
   <version>0.1-SNAPSHOT</version>
   <packaging>jar</packaging>
   <name>Akubra UUID Date Path IdMapper</name>
-  <url>http://akubraproject.org/</url>
+  <url>http://mediashelf.github.com/${project.artifactId}</url>
   <description>Implementation of IdMapper that uses version 1 UUIDs to calculate paths</description>
 
   <properties>
@@ -75,6 +81,7 @@
     <url>http://www.yourmediashelf.com/</url>
   </organization>
   <inceptionYear>2012</inceptionYear>
+  
   <scm>
     <connection>scm:git:git://github.com/mediashelf/${project.artifactId}.git
     </connection>
@@ -83,12 +90,26 @@
     <url>http://github.com/mediashelf/${project.artifactId}</url>
   </scm>
   
+  <mailingLists>
+    <mailingList>
+      <name>Fedora Users List</name>
+      <subscribe>https://lists.sourceforge.net/lists/listinfo/fedora-commons-users</subscribe>
+      <unsubscribe>https://lists.sourceforge.net/lists/listinfo/fedora-commons-users</unsubscribe>
+      <post>fedora-commons-users@lists.sourceforge.net</post>
+      <archive>http://sourceforge.net/mailarchive/forum.php?forum_name=fedora-commons-users</archive>
+      <otherArchives>
+        <otherArchive>http://dir.gmane.org/gmane.comp.cms.fedora-commons.user</otherArchive>
+      </otherArchives>
+    </mailingList>
+  </mailingLists>
+  
   <distributionManagement>
     <site>
       <id>gh-pages</id>
       <url>gitsite:git@github-mshlf/mediashelf/${project.artifactId}.git</url>
     </site>
   </distributionManagement>
+  
   <build>
     <pluginManagement>
       <plugins>
