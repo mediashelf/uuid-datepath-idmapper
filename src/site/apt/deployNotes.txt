@@ -1,0 +1,71 @@
+	---
+	Deploy Notes
+	---
+
+Maven requirements
+Maven version 3.0.0 (or greater) is required to support deployment of artifacts
+
++--
+Snapshot release
+
++--
+mvn clean javadoc:jar source:jar deploy
++--
+
+Performing a release
+
++--
+# if needed, add missing license headers
+mvn license:format
+
+mvn release:prepare -DdryRun
+mvn release:clean && mvn release:prepare
+mvn release:perform
+
++--
+
+Release without generating site
+
++--
+mvn release:perform -Dgoals=deploy
++--
+
+Release from a tag (e.g. if a release fails after a tag has been generated 
+and the pom versions have been incremented, there should be no need to 
+perform a mvn release:rollback. Instead, perform the release from the tag.
+
++--
+mvn release:perform -DconnectionUrl=scm:git:git://github.com/mediashelf/uuid-datepath-idmapper -Dtag=uuid-datepath-idmapper-0.1.7
++--
+
+Release using a SOCKS proxy
+
++--
+MAVEN_OPTS="-DsocksProxyHost=localhost -DsocksProxyPort=8000" mvn release:perform 
++--
+
+
+Fixing a botched release
+
++--
+# maven cleanup
+mvn release:rollback
+
+# delete the local tag maven release:prepare created
+#	substitute "uuid-datepath-idmapper-0.0.8" with the actual tag
+git tag -d uuid-datepath-idmapper-0.0.8
+
+# delete the remote tag
+git push origin :uuid-datepath-idmapper-0.0.8
+
+# find the commit you want to back to
+git log --pretty=oneline
+
+# reset local repo
+git reset --hard thechecksum
+
+# reset remote repo
+git push origin +master
++--
+
+

@@ -1,0 +1,11 @@
+    ---
+    Introduction
+    ---
+    Edwin Shin
+    ---
+    
+Introduction
+
+    MediaShelf {{{http://www.github.com/mediashelf/uuid-datepath-idmapper}uuid-datepath-idmapper}} 
+is an {{{http://akubraproject.org/}Akubra}} IdMapper implementation that uses time-coded 
+UUIDs (i.e. UUID version 1) to calculate date-based paths.    
