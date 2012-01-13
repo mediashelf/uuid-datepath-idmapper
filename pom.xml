@@ -233,6 +233,24 @@
         <artifactId>maven-shade-plugin</artifactId>
         <executions>
           <execution>
+            <id>jug-dependency</id>
+            <phase>package</phase>
+            <goals>
+              <goal>shade</goal>
+            </goals>
+            <configuration>
+              <artifactSet>
+                <includes>
+                  <include>com.fasterxml.uuid:java-uuid-generator</include>
+                </includes>
+              </artifactSet>
+              <shadedArtifactAttached>true</shadedArtifactAttached>
+              <shadedClassifierName>with-jug-dependency</shadedClassifierName>
+              <minimizeJar>true</minimizeJar>
+            </configuration>
+          </execution>
+          <execution>
+            <id>all-dependencies</id>
             <phase>package</phase>
             <goals>
               <goal>shade</goal>
@@ -249,7 +267,8 @@
                 </excludes>
               </artifactSet>
               <shadedArtifactAttached>true</shadedArtifactAttached>
-              <shadedClassifierName>with-dependencies</shadedClassifierName>
+              <shadedClassifierName>with-all-dependencies</shadedClassifierName>
+              <minimizeJar>true</minimizeJar>
             </configuration>
           </execution>
         </executions>
