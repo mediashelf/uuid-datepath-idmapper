@@ -8,4 +8,7 @@ Introduction
 
     MediaShelf {{{http://www.github.com/mediashelf/uuid-datepath-idmapper}uuid-datepath-idmapper}} 
 is an {{{http://akubraproject.org/}Akubra}} IdMapper implementation that uses time-coded 
-UUIDs (i.e. UUID version 1) to calculate date-based paths.    
+UUIDs (i.e. UUID version 1) to calculate date-based paths.
+    
+    For examples of how to use uuid-datepath-idmapper with Fedora, see the 
+{{{./usage.html}Usage}} documentation.
