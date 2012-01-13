@@ -24,14 +24,22 @@ package com.yourmediashelf.fedora.akubra;
 import static org.junit.Assert.assertEquals;
 
 import java.net.URI;
+import java.nio.ByteBuffer;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.Random;
 import java.util.TimeZone;
+import java.util.UUID;
 
 import org.akubraproject.map.IdMapper;
 import org.junit.Test;
+
+import com.fasterxml.uuid.EthernetAddress;
+import com.fasterxml.uuid.MutableUUIDTimer;
+import com.fasterxml.uuid.impl.UUID1Generator;
 
 /**
  * @author Edwin Shin
@@ -98,7 +106,7 @@ public class UUIDDatePathIdMapperTest {
 	 * @param date
 	 * @return
 	 */
-	public static String convertDateToString(Date date) {
+	protected static String convertDateToString(Date date) {
         if (date == null) {
             return null;
         } else {
@@ -109,7 +117,7 @@ public class UUIDDatePathIdMapperTest {
         }
     }
 	
-	public static Date parseDate(String dateString) throws ParseException {
+	protected static Date parseDate(String dateString) throws ParseException {
         if (dateString == null) {
             throw new ParseException("Argument cannot be null.", 0);
         } else if (dateString.isEmpty()) {
@@ -167,4 +175,38 @@ public class UUIDDatePathIdMapperTest {
         }
         return formatter.parse(dateString);
     }
+	
+	@Test
+	public void testUUIDGeneration() throws Exception {
+		EthernetAddress addr = new EthernetAddress("01:aa:75:ed:71:a1");
+		MutableUUIDTimer timer = new MutableUUIDTimer(new Random(System.currentTimeMillis()), null);
+		UUID1Generator gen = new UUID1Generator(addr, timer);
+		
+		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+		df.setTimeZone(TimeZone.getTimeZone("UTC"));
+		Date d = df.parse("2011-12-31");
+		UUID uuid = gen.generate(d.getTime());
+		
+		assertEquals(d.getTime(), getDate(uuid).getTime());
+		assertEquals(addr.toString(), getNode(uuid));
+	}
+	
+	private Date getDate(UUID uuid) {
+    	if (uuid.version() != 1) {
+    		throw new IllegalArgumentException("Wrong UUID version: " + uuid.version());
+    	}
+    	
+    	long NUM_100NS_INTERVALS_BETWEEN_UUID_AND_UNIX_EPOCHS = 0x01b21dd213814000L;
+		long t1 = uuid.timestamp() - NUM_100NS_INTERVALS_BETWEEN_UUID_AND_UNIX_EPOCHS;
+		return new Date(t1/10000);
+    }
+	
+	private String getNode(UUID uuid) {
+		ByteBuffer buffer = ByteBuffer.allocate(8);
+		buffer.putLong(uuid.getLeastSignificantBits());
+		// node is the last 6 bytes
+		byte[] node = Arrays.copyOfRange(buffer.array(), 2, 8);
+		EthernetAddress addr = new EthernetAddress(node);
+		return addr.toString();
+	}
 }
