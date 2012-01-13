@@ -68,7 +68,7 @@ public class TrivialIdMapper implements IdMapper {
 		if (externalPrefix == null) {
             throw new NullPointerException();
         }
-		
+		// TODO
 		return null;
 	}
 }
