@@ -1,3 +1,21 @@
+/**
+ * Copyright (C) 2012 MediaShelf <http://www.yourmediashelf.com/>
+ *
+ * This file is part of uuid-datepath-idmapper.
+ *
+ * uuid-datepath-idmapper is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * uuid-datepath-idmapper is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with uuid-datepath-idmapper.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package com.fasterxml.uuid.impl;
 
 import java.util.UUID;
@@ -8,6 +26,15 @@ import com.fasterxml.uuid.NoArgGenerator;
 import com.fasterxml.uuid.UUIDType;
 import com.fasterxml.uuid.impl.UUIDUtil;
 
+/**
+ * UUID version 1 generator that accepts a unix timestamp as an argument.
+ * This is just a hack since some of the java-uuid-generator classes/methods 
+ * are currently final or not visible. Hopefully future versions of JUG will
+ * obviate the need for this.
+ * 
+ * @author Edwin Shin
+ *
+ */
 public class UUID1Generator extends NoArgGenerator {
 
 	protected final EthernetAddress _ethernetAddress;
