@@ -58,7 +58,7 @@ public class UUIDDatePathIdMapper implements IdMapper {
 	/**
 	 * <p>Convenience constructor that uses the default dateFormat and fallbackMapper.
 	 * 
-	 * <p>Note: the default fallbackMapper (TrivialIdMapper) is probably not 
+	 * <p>Note: the default fallbackMapper ({@link TrivialIdMapper}) is probably not 
 	 * what you should be using.
 	 * 
 	 */
@@ -69,12 +69,12 @@ public class UUIDDatePathIdMapper implements IdMapper {
 	/**
 	 * <p>Convenience constructor that uses the default fallbackMapper.
 	 * 
-	 * <p>Note: the default fallbackMapper (TrivialIdMapper) is probably not 
+	 * <p>Note: the default fallbackMapper ({@link TrivialIdMapper}) is probably not 
 	 * what you should be using.
 	 * 
-	 * @param dateFormat
+	 * @param dateFormat A {@link DateTimeFormat} pattern to generate the path.
 	 * 
-	 * @see http://joda-time.sourceforge.net/apidocs/org/joda/time/format/DateTimeFormat.html#forPattern%28java.lang.String%29
+	 * @see <a href="http://joda-time.sourceforge.net/apidocs/org/joda/time/format/DateTimeFormat.html#forPattern%28java.lang.String%29>Joda-Time DateTimeFormat</a>
 	 */
 	public UUIDDatePathIdMapper(String dateFormat) {
 		this(dateFormat, null);
@@ -83,7 +83,8 @@ public class UUIDDatePathIdMapper implements IdMapper {
 	/**
 	 * Convenience constructor that uses the default dateFormat.
 	 * 
-	 * @param fallbackMapper
+	 * @param fallbackMapper The {@link IdMapper} implementation to use when encountering 
+	 * an id which is not a version 1 UUID.
 	 */
 	public UUIDDatePathIdMapper(IdMapper fallbackMapper) {
 		this(null, fallbackMapper);
@@ -91,11 +92,11 @@ public class UUIDDatePathIdMapper implements IdMapper {
 	
 	/**
 	 * 
-	 * @param dateFormat The format pattern used to generate the path. If null or empty, 
-	 * defaults to "yyyy/MM/dd".
-	 * @param fallbackMapper The IdMapper to use if/when we encounter an id that 
-	 * is not a version 1 UUID. If null, defaults to TrivialIdMapper.
-	 * @see http://joda-time.sourceforge.net/apidocs/org/joda/time/format/DateTimeFormat.html#forPattern%28java.lang.String%29
+	 * @param dateFormat A {@link DateTimeFormat} pattern to generate the path. 
+	 * If null or empty, defaults to "yyyy/MM/dd".
+	 * @param fallbackMapper The {@link IdMapper} to use if/when we encounter an 
+	 * id that is not a version 1 UUID. If null, defaults to TrivialIdMapper.
+	 * @see <a href="http://joda-time.sourceforge.net/apidocs/org/joda/time/format/DateTimeFormat.html#forPattern%28java.lang.String%29>Joda-Time DateTimeFormat</a>
 	 */
 	public UUIDDatePathIdMapper(String dateFormat, IdMapper fallbackMapper) {
 		if (fallbackMapper == null) {
@@ -184,7 +185,7 @@ public class UUIDDatePathIdMapper implements IdMapper {
      * Searches for and returns a UUID embedded in the supplied string.
      * 
      * @param s Any string that contains a UUID in canonical form.
-     * @return UUID
+     * @return UUID The UUID contained in the supplied string.
      * @throws NullPointerException
      */
 	protected UUID extractUUID(String s) throws NullPointerException {
@@ -208,7 +209,8 @@ public class UUIDDatePathIdMapper implements IdMapper {
      * Get the DateTime from a version 1 UUID.
      * 
      * @param uuid a version 1 UUID
-     * @return
+     * @return DateTime value extracted from the UUID, or IllegalArgumentException 
+     * if uuid is not a version 1 UUID.
      */
     protected DateTime getDateTime(UUID uuid) {
     	if (uuid.version() != 1) {
