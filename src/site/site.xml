@@ -12,7 +12,7 @@
       <item name="Projects on GitHub" href="http://github.com/mediashelf/"/>
     </links>
 
-    <menu name="MediaShelf uuid-datepath-idmapper">
+    <menu name="uuid-datepath-idmapper">
       <item name="Introduction" href="index.html"/>
       <item name="Usage" href="usage.html"/>
     </menu>
