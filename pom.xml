@@ -48,6 +48,11 @@
       <version>2.0</version>
     </dependency>
     <dependency>
+      <groupId>fast-md5</groupId>
+      <artifactId>fast-md5</artifactId>
+      <version>2.5</version>
+    </dependency>
+    <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
     </dependency>
@@ -368,4 +373,18 @@
       </build>
     </profile>
   </profiles>
+  <repositories>
+    <!-- for fast-md5 dependency -->
+    <repository>
+      <id>maven.glassfish.org</id>
+      <name>GlassFish Nexus Server</name>
+      <url>http://maven.glassfish.org/content/groups/glassfish</url>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </repository>
+  </repositories>
 </project>

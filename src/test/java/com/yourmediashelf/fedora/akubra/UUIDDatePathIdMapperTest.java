@@ -101,6 +101,34 @@ public class UUIDDatePathIdMapperTest {
 	}
 
 	/**
+	 * Test use of IdMapperPrefixer
+	 *
+	 * @throws Exception
+	 */
+	@Test
+	public void testFedoraNamespacePrefixer() throws Exception {
+	    IdMapperPrefixer prefixer = new FedoraNamespacePrefixer();
+	    IdMapper fallback = new PrefixingHashPathIdMapper("##", prefixer);
+	    IdMapper m = new UUIDDatePathIdMapper(null, fallback, prefixer);
+        URI internalId, externalId;
+
+        for (String pid : upids) {
+            internalId = m.getInternalId(new URI(pid));
+            assertEquals("file:cellar/2011/10/13/" + IdMapperUtil.encode(pid), internalId.toString());
+            externalId = m.getExternalId(internalId);
+            assertEquals(pid, externalId.toString());
+        }
+
+        // Using a non type 1 UUID, so should use PrefixingHashPathIdMapper
+        // The MD5 of fallbackId is "f5b3783ee48db3b87a008eace01b0060"
+        String fallbackId = "info:fedora/test:123";
+        internalId = m.getInternalId(new URI(fallbackId));
+        assertEquals("file:test/f5/" + IdMapperUtil.encode(fallbackId), internalId.toString());
+        externalId = m.getExternalId(internalId);
+        assertEquals(fallbackId, externalId.toString());
+	}
+
+	/**
 	 * Convert a Java Date into a ISO-8601 UTC date string
 	 * 
 	 * @param date

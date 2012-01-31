@@ -22,10 +22,10 @@ and java-uuid-generator-NNN.jar to <<<$CATALINA_HOME/webapps/fedora/WEB-INF/lib/
 
     As of version 0.2, uuid-datepath-idmapper also packages a 
 with-jug-dependency.jar which includes the required java-uuid-generator classes 
-so that you need only install a single jar. The with-all-dependencies.jar
+so that you need only install a single jar. The <with-all-dependencies.jar>
 includes, as the name suggests, all dependencies of the project. However, with 
 the exception of java-uuid-generator, those dependencies are already provided by 
-Fedora and so the with-all-dependencies.jar is probably only useful to 
+Fedora and so the <with-all-dependencies.jar> is probably only useful to 
 non-Fedora based deployment or uses of uuid-datepath-idmapper.
 
 * Configuration
@@ -92,3 +92,47 @@ on supported date format patterns, consult the
 {{{http://joda-time.sourceforge.net/apidocs/org/joda/time/format/DateTimeFormat.html#forPattern%28java.lang.String%29}joda-time DateTimeFormat}} 
 documentation.
 
+    As of version 0.3, uuid-datepath-idmapper also supports an 
+<<<IdMapperPrefixer>>>. At this writing, the only implementation of 
+<<<IdMapperPrefixer>>> is <<<FedoraNamespacePrefixer>>> which prefixes the path
+with the namespace of the Fedora PID. For example, given the type 1 UUID-based 
+PID <<<demo:25f814ce-f5ac-11e0-b139-2837370107a5>>>, uuid-datepath-idmapper 
+would return a path such as <<<2011/10/13/>>>. However, configured with 
+<<<FedoraNamespacePrefixer>>>, uuid-datepath-idmapper would return 
+<<<demo/2011/10/13/>>>.
+
+    The following configuration example shows the use of uuid-datepath-idmapper
+with <<<FedoraNamespacePrefixer>>> as well as <<<PrefixingHashPathIdMapper>>> as
+a fallback IdMapper. <<<PrefixingHashPathIdMapper>>> is simply an extension of 
+<<<org.fcrepo.server.storage.lowlevel.akubra.HashPathIdMapper>>> that accepts an
+<<<IdMapperPrefixer>>>.
+
++--
+  <bean name="prefixer"
+    class="com.yourmediashelf.fedora.akubra.FedoraNamespacePrefixer"
+    singleton="true">
+  </bean>
+  
+  <bean name="fallbackIdMapper"
+    class="com.yourmediashelf.fedora.akubra.PrefixingHashPathIdMapper"
+    singleton="true">
+    <constructor-arg value="##/##" />
+    <ref bean="prefixer"/>
+  </bean>
+  
+  <bean name="fsObjectStoreMapper"
+    class="com.yourmediashelf.fedora.akubra.UUIDDatePathIdMapper"
+    singleton="true">
+    <constructor-arg>
+      <ref bean="fallbackIdMapper" />
+    </constructor-arg>
+  </bean>
+  
+  <bean name="fsDatastreamStoreMapper"
+    class="com.yourmediashelf.fedora.akubra.UUIDDatePathIdMapper"
+    singleton="true">
+    <constructor-arg>
+      <ref bean="fallbackIdMapper" />
+    </constructor-arg>
+  </bean>
++--

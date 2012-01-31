@@ -48,6 +48,7 @@ public class UUIDDatePathIdMapper implements IdMapper {
 	private IdMapper fallbackMapper;
 	private Pattern pattern;
 	private DateTimeFormatter fmt;
+	private final IdMapperPrefixer prefixer;
 	
 	/**
 	 * The number of 100-ns intervals between the UUID epoch 1582-10-15 00:00:00 
@@ -96,27 +97,44 @@ public class UUIDDatePathIdMapper implements IdMapper {
 	 * If null or empty, defaults to "yyyy/MM/dd".
 	 * @param fallbackMapper The {@link IdMapper} to use if/when we encounter an 
 	 * id that is not a version 1 UUID. If null, defaults to TrivialIdMapper.
+	 *
 	 * @see <a href="http://joda-time.sourceforge.net/apidocs/org/joda/time/format/DateTimeFormat.html#forPattern%28java.lang.String%29>Joda-Time DateTimeFormat</a>
 	 */
 	public UUIDDatePathIdMapper(String dateFormat, IdMapper fallbackMapper) {
-		if (fallbackMapper == null) {
-			this.fallbackMapper = new TrivialIdMapper();
-		} else {
-			this.fallbackMapper = fallbackMapper;
-		}
-		
-		// minor performance optimization since we only support UTC
-		System.setProperty("org.joda.time.DateTimeZone.Provider", "org.joda.time.tz.UTCProvider");
-		
-		if (dateFormat == null || dateFormat.isEmpty()) {
-			dateFormat = "yyyy/MM/dd";
-		}
-		fmt = DateTimeFormat.forPattern(dateFormat);
-		
-		// regex Pattern for canonical UUIDs (32 hexadecimal digits, separated in 5 groups by hyphens)
-    	pattern = Pattern.compile(".*([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}).*");	
+		this(dateFormat, fallbackMapper, null);
 	}
 	
+	/**
+	 *
+	 * @param dateFormat A {@link DateTimeFormat} pattern to generate the path.
+     * If null or empty, defaults to "yyyy/MM/dd".
+	 * @param fallbackMapper The {@link IdMapper} to use if/when we encounter an
+     * id that is not a version 1 UUID. If null, defaults to TrivialIdMapper.
+	 * @param prefixer The IdMapperPrefixer to use, or <code>null</code>.
+	 *
+	 * @see <a href="http://joda-time.sourceforge.net/apidocs/org/joda/time/format/DateTimeFormat.html#forPattern%28java.lang.String%29>Joda-Time DateTimeFormat</a>
+	 */
+	public UUIDDatePathIdMapper(String dateFormat, IdMapper fallbackMapper, IdMapperPrefixer prefixer) {
+        // minor performance optimization since we only support UTC
+        System.setProperty("org.joda.time.DateTimeZone.Provider", "org.joda.time.tz.UTCProvider");
+
+        // regex Pattern for canonical UUIDs (32 hexadecimal digits, separated in 5 groups by hyphens)
+        pattern = Pattern.compile(".*([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}).*");
+
+        if (dateFormat == null || dateFormat.isEmpty()) {
+            dateFormat = "yyyy/MM/dd";
+        }
+        fmt = DateTimeFormat.forPattern(dateFormat);
+
+        if (fallbackMapper == null) {
+            this.fallbackMapper = new TrivialIdMapper();
+        } else {
+            this.fallbackMapper = fallbackMapper;
+        }
+
+        this.prefixer = prefixer;
+    }
+
 	/* (non-Javadoc)
 	 * @see org.akubraproject.map.IdMapper#getExternalId(java.net.URI)
 	 */
@@ -170,12 +188,29 @@ public class UUIDDatePathIdMapper implements IdMapper {
         return null;
 	}
 	
-	private String getPath(String uri) {
+	/**
+	 * Given an identifier which contains a type 1 UUID in canonical form,
+	 * return the date-formatted path given by the identifier.
+	 *
+	 * @param uri the identifier, e.g. "info:fedora/test:25f814ce-f5ac-11e0-b139-2837370107a5"
+	 * @return the path for the identifier, e.g. "2011/10/13/"
+	 * @throws NullPointerException if the uri is null
+	 * @throws IllegalArgumentException if the uri does not contain a type 1 UUID
+	 */
+	private String getPath(String uri) throws NullPointerException, IllegalArgumentException {
 		UUID uuid = extractUUID(uri);
 		UUIDType uuidType = UUIDUtil.typeOf(uuid);
 		if (uuidType.equals(UUIDType.TIME_BASED)) {
-			return getDateTime(uuid).toString(fmt) + '/';
-	        
+		    StringBuilder prefix = new StringBuilder();
+		    if (prefixer != null) {
+    		    prefix.append(prefixer.getPrefix(uri));
+    		    if (prefix.length() > 0) {
+    		        prefix.append('/');
+    		    }
+		    }
+
+			return prefix + getDateTime(uuid).toString(fmt) + '/';
+
 		} else {
 			throw new IllegalArgumentException("Wrong type of UUID. " + uuid.toString() + " is " + uuidType);
 		}
@@ -187,8 +222,9 @@ public class UUIDDatePathIdMapper implements IdMapper {
      * @param s Any string that contains a UUID in canonical form.
      * @return UUID The UUID contained in the supplied string.
      * @throws NullPointerException
-     */
-	protected UUID extractUUID(String s) throws NullPointerException {
+	 * @throws IllegalArgumentException if the input does not contain a UUID
+	 */
+	protected UUID extractUUID(String s) throws NullPointerException, IllegalArgumentException {
     	if (s == null) {
     		throw new NullPointerException();
     	}
