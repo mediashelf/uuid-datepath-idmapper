@@ -52,11 +52,11 @@ Fixing a botched release
 mvn release:rollback
 
 # delete the local tag maven release:prepare created
-#	substitute "uuid-datepath-idmapper-0.0.8" with the actual tag
-git tag -d uuid-datepath-idmapper-0.0.8
+#	substitute "uuid-datepath-idmapper-0.3" with the actual tag
+git tag -d uuid-datepath-idmapper-0.3
 
 # delete the remote tag
-git push origin :uuid-datepath-idmapper-0.0.8
+git push origin :uuid-datepath-idmapper-0.3
 
 # find the commit you want to back to
 git log --pretty=oneline

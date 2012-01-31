@@ -11,13 +11,13 @@ need to: it takes a version 1 UUID as an input argument and provides a path as
 the return value.
 
     However, the Java Class Library provided 
-{{{http://docs.oracle.com/javase/6/docs/api/java/util/UUID.html}}UUID} class 
+{{{http://docs.oracle.com/javase/6/docs/api/java/util/UUID.html}UUID}} class 
 only generates version 4 UUIDs, so what follows is a brief overview of some 
 options to generate the version 1 UUIDs that uuid-datepath-idmapper expects.
 
 * Java Uuid Generator (JUG)
 
-    {{{http://wiki.fasterxml.com/JugHome}}JUG} is what uuid-datepath-idmapper 
+    {{{http://wiki.fasterxml.com/JugHome}JUG}} is what uuid-datepath-idmapper 
 uses internally for parsing version 1 uuids. It also supports generating version 
 1 UUIDs.
 
@@ -27,13 +27,13 @@ uses internally for parsing version 1 uuids. It also supports generating version
   UUID uuid = uuidGenerator.generate();
 +--
 
-    The {{{http://mediashelf.github.com/uuid-datepath-idmapper/xref-test/index.html}}test sources} 
+    The {{{http://mediashelf.github.com/uuid-datepath-idmapper/xref-test/index.html}test sources}} 
 contain an example of how you might extend JUG to support taking an arbitrary 
 timestamp (rather than using the current system time).
 
 * com.eaio.uuid.UUID
 
-    {{{http://johannburkard.de/software/uuid/}}com.eaio.uuid.UUID} generates 
+    {{{http://johannburkard.de/software/uuid/}com.eaio.uuid.UUID}} generates 
 only type 1 UUIDs.
 
     com.eaio.uuid.UUID has two constructors for generating new UUIDs. The default 
