@@ -29,7 +29,7 @@
                 
                 <div class="xleft">
         <span id="publishDate">Last Published: 2012-01-31</span>
-                  &nbsp;| <span id="projectVersion">Version: 0.4</span>
+                  &nbsp;| <span id="projectVersion">Version: 0.5-SNAPSHOT</span>
                       </div>
             <div class="xright">                    <a href="http://www.yourmediashelf.com/" class="externalLink" title="MediaShelf">MediaShelf</a>
             |
@@ -120,7 +120,21 @@
     </div>
     <div id="bodyColumn">
       <div id="contentBox">
-        <div class="section"><h2>Introduction<a name="Introduction"></a></h2><p>The MediaShelf <a class="externalLink" href="http://www.github.com/mediashelf/uuid-datepath-idmapper">uuid-datepath-idmapper</a> is an <a class="externalLink" href="http://akubraproject.org/">Akubra</a> IdMapper implementation that uses time-coded UUIDs (i.e. UUID version 1) to calculate date-based paths.</p><p>The default IdMapper implementation used by Fedora is the HashPathIdMapper, which calculates an MD5 checksum on the PID to determine where on the filesystem objects and datastreams should be stored.</p><p>For example, given the PID demo:123, we calculate the MD5 checksum of the URI form of the PID, &quot;info:fedora/demo:123&quot;, which is <tt>d2501d9bdf031b954072edfd39df70f1</tt>. In the default Fedora configuration, HashPathIdMapper uses just the first two characters of the checksum to build the directory path. So, if your objectStore is located in <tt>/opt/fedora/data/objectStore</tt>, Fedora would store the object at <tt>/opt/fedora/data/objectStore/d2/info%3Afedora%2Fdemo%3A123</tt>. (Various &quot;special&quot; characters such as colons and slashes are escaped).</p><p>When provided with a PID that includes a version 1 UUID, uuid-datepath-idmapper uses the timestamp information embedded in the UUID to calculate a date-time based filesystem path. For example, given the PID <tt>demo:25f814ce-f5ac-11e0-b139-2837370107a5.xyz</tt>, we extract the timestamp information from the UUID portion of the PID (<tt>25f814ce-f5ac-11e0-b139-2837370107a5</tt>) which is 2011-10-13T15:00:54Z. In the default configuration, uuid-datepath-idmapper uses the year, month and day to calculate the path, e.g.: <tt>/opt/fedora/data/objectStore/2011/10/13/info%3Afedora%2Fdemo%3A25f814ce-f5ac-11e0-b139-2837370107a5.xyz</tt>.</p><p>If provided a PID which is not a version 1 UUID, uuid-datepath-idmapper uses a fallback IdMapper such as the HashPathIdMapper.</p></div><div class="section"><h2>Usage<a name="Usage"></a></h2><p>For examples of how to use uuid-datepath-idmapper with Fedora, see the <a href="./usage.html">Usage</a> documentation.</p></div>
+        <div class="section"><h2>Introduction<a name="Introduction"></a></h2><p>The MediaShelf <a class="externalLink" href="http://www.github.com/mediashelf/uuid-datepath-idmapper">uuid-datepath-idmapper</a> is an <a class="externalLink" href="http://akubraproject.org/">Akubra</a> IdMapper implementation that uses time-coded UUIDs (i.e. UUID version 1) to calculate date-based paths.</p><p>The chief motivation for uuid-datepath-idmapper was to enable a filesystem distribution that better supported selective backup and restore as well as tiered storage decisions (e.g. where older resources might go to slower, cheaper storage, but newer resources went to faster, more expensive storage).</p><p>The default IdMapper implementation used by Fedora is the HashPathIdMapper, which calculates an MD5 checksum on the PID to determine where on the filesystem objects and datastreams should be stored.</p><p>For example, given the PID demo:123, we calculate the MD5 checksum of the URI form of the PID, &quot;info:fedora/demo:123&quot;, which is <tt>d2501d9bdf031b954072edfd39df70f1</tt>. In the default Fedora configuration, HashPathIdMapper uses just the first two characters of the checksum to build the directory path. So, if your objectStore is located in <tt>/opt/fedora/data/objectStore</tt>, Fedora would store the object at <tt>/opt/fedora/data/objectStore/d2/info%3Afedora%2Fdemo%3A123</tt>. (Various &quot;special&quot; characters such as colons and slashes are escaped).</p><p>When provided with a PID that includes a version 1 UUID, uuid-datepath-idmapper uses the timestamp information embedded in the UUID to calculate a date-time based filesystem path. For example, given the PID <tt>demo:25f814ce-f5ac-11e0-b139-2837370107a5.xyz</tt>, we extract the timestamp information from the UUID portion of the PID (<tt>25f814ce-f5ac-11e0-b139-2837370107a5</tt>) which is 2011-10-13T15:00:54Z. In the default configuration, uuid-datepath-idmapper uses the year, month and day to calculate the path, e.g.: <tt>/opt/fedora/data/objectStore/2011/10/13/info%3Afedora%2Fdemo%3A25f814ce-f5ac-11e0-b139-2837370107a5.xyz</tt>.</p><p>If provided a PID which is not a version 1 UUID, uuid-datepath-idmapper uses a fallback IdMapper such as the HashPathIdMapper.</p><p>uuid-datepath-idmapper can provide a filesystem distribution such as the one shown below, which creates a top-level directory based on the PID namespace (e.g. &quot;fedora-system&quot; or &quot;test&quot;), followed by either a hash-based or date-based path:</p><div class="source"><pre>/opt/fedora/data/objectStore/
+    fedora-system/
+        6f/
+            info%3Afedora%2Ffedora-system%3AContentModel-3.0
+        8c/
+            info%3Afedora%2Ffedora-system%3AServiceDeployment-3.0
+        96/
+            info%3Afedora%2Ffedora-system%3AServiceDefinition-3.0
+        e5/
+            info%3Afedora%2Ffedora-system%3AFedoraObject-3.0
+    test/
+        2012/
+            01/
+                31/
+                    info%3Afedora%2Ftest%3A5a701fd0-4c39-11e1-b86c-0800200c9a66</pre></div></div><div class="section"><h2>Usage<a name="Usage"></a></h2><p>For examples of how to use uuid-datepath-idmapper with Fedora, see the <a href="./usage.html">Usage</a> documentation.</p></div>
       </div>
     </div>
     <div class="clear">
