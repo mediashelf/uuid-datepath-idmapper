@@ -11,6 +11,11 @@ Introduction
 is an {{{http://akubraproject.org/}Akubra}} IdMapper implementation that uses 
 time-coded UUIDs (i.e. UUID version 1) to calculate date-based paths.
 
+    The chief motivation for uuid-datepath-idmapper was to enable a filesystem 
+distribution that better supported selective backup and restore as well as 
+tiered storage decisions (e.g. where older resources might go to slower, 
+cheaper storage, but newer resources went to faster, more expensive storage).
+
     The default IdMapper implementation used by Fedora is the HashPathIdMapper, 
 which calculates an MD5 checksum on the PID to determine where on the filesystem 
 objects and datastreams should be stored.
@@ -36,6 +41,29 @@ to calculate the path, e.g.:
 
     If provided a PID which is not a version 1 UUID, uuid-datepath-idmapper 
 uses a fallback IdMapper such as the HashPathIdMapper.
+
+    uuid-datepath-idmapper can provide a filesystem distribution such as the one 
+shown below, which creates a top-level directory based on the PID namespace 
+(e.g. "fedora-system" or "test"), followed by either a hash-based or date-based 
+path:
+
++--
+/opt/fedora/data/objectStore/
+    fedora-system/
+        6f/
+            info%3Afedora%2Ffedora-system%3AContentModel-3.0
+        8c/
+            info%3Afedora%2Ffedora-system%3AServiceDeployment-3.0
+        96/
+            info%3Afedora%2Ffedora-system%3AServiceDefinition-3.0
+        e5/
+            info%3Afedora%2Ffedora-system%3AFedoraObject-3.0
+    test/
+        2012/
+            01/
+                31/
+                    info%3Afedora%2Ftest%3A5a701fd0-4c39-11e1-b86c-0800200c9a66
++--
 
 
 Usage
