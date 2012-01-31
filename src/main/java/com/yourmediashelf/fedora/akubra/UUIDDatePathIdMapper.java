@@ -57,14 +57,15 @@ public class UUIDDatePathIdMapper implements IdMapper {
 	private final static long NUM_100NS_INTERVALS_SINCE_UUID_EPOCH = 0x01b21dd213814000L;
 	
 	/**
-	 * <p>Convenience constructor that uses the default dateFormat and fallbackMapper.
-	 * 
+	 * <p>Convenience constructor that uses the default dateFormat, 
+	 * fallbackMapper and no IdMapperPrefixer.
+	 *
 	 * <p>Note: the default fallbackMapper ({@link TrivialIdMapper}) is probably not 
 	 * what you should be using.
 	 * 
 	 */
 	public UUIDDatePathIdMapper() {
-		this(null, null);
+		this(null, null, null);
 	}
 	
 	/**
@@ -82,7 +83,8 @@ public class UUIDDatePathIdMapper implements IdMapper {
 	}
 	
 	/**
-	 * Convenience constructor that uses the default dateFormat.
+	 * <p>Convenience constructor that uses the default dateFormat and no 
+	 * IdMapperPrefixer.
 	 * 
 	 * @param fallbackMapper The {@link IdMapper} implementation to use when encountering 
 	 * an id which is not a version 1 UUID.
@@ -92,6 +94,7 @@ public class UUIDDatePathIdMapper implements IdMapper {
 	} 
 	
 	/**
+	 * <p>Convenience constructor that uses no IdMapperPrefixer.
 	 * 
 	 * @param dateFormat A {@link DateTimeFormat} pattern to generate the path. 
 	 * If null or empty, defaults to "yyyy/MM/dd".
@@ -102,6 +105,19 @@ public class UUIDDatePathIdMapper implements IdMapper {
 	 */
 	public UUIDDatePathIdMapper(String dateFormat, IdMapper fallbackMapper) {
 		this(dateFormat, fallbackMapper, null);
+	}
+	
+	/**
+    * Convenience constructor that uses the default dateFormat.
+    *
+    * @param fallbackMapper The {@link IdMapper} to use if/when we encounter an
+    * id that is not a version 1 UUID. If null, defaults to TrivialIdMapper.
+    * @param prefixer The IdMapperPrefixer to use, or <code>null</code>.
+    *
+    * @see <a href="http://joda-time.sourceforge.net/apidocs/org/joda/time/format/DateTimeFormat.html#forPattern%28java.lang.String%29>Joda-Time DateTimeFormat</a>
+    */
+	public UUIDDatePathIdMapper(IdMapper fallbackMapper, IdMapperPrefixer prefixer) {
+	    this(null, fallbackMapper, prefixer);
 	}
 	
 	/**

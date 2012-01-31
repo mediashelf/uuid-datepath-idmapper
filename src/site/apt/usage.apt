@@ -117,7 +117,9 @@ a fallback IdMapper. <<<PrefixingHashPathIdMapper>>> is simply an extension of
     class="com.yourmediashelf.fedora.akubra.PrefixingHashPathIdMapper"
     singleton="true">
     <constructor-arg value="##/##" />
-    <ref bean="prefixer"/>
+    <constructor-arg>
+      <ref bean="prefixer" />
+    </constructor-arg>
   </bean>
   
   <bean name="fsObjectStoreMapper"
@@ -126,6 +128,9 @@ a fallback IdMapper. <<<PrefixingHashPathIdMapper>>> is simply an extension of
     <constructor-arg>
       <ref bean="fallbackIdMapper" />
     </constructor-arg>
+    <constructor-arg>
+      <ref bean="prefixer" />
+    </constructor-arg>
   </bean>
   
   <bean name="fsDatastreamStoreMapper"
@@ -133,6 +138,9 @@ a fallback IdMapper. <<<PrefixingHashPathIdMapper>>> is simply an extension of
     singleton="true">
     <constructor-arg>
       <ref bean="fallbackIdMapper" />
+    </constructor-arg>
+    <constructor-arg>
+      <ref bean="prefixer" />
     </constructor-arg>
   </bean>
 +--
