@@ -15,6 +15,7 @@
     <menu name="uuid-datepath-idmapper">
       <item name="Introduction" href="index.html"/>
       <item name="Usage" href="usage.html"/>
+      <item name="Generating UUIDs" href="generate_uuids.html"/>
     </menu>
 
     <menu name="Project Information">
