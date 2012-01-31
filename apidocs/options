@@ -15,10 +15,10 @@
 -docencoding
 'UTF-8'
 -doctitle
-'Akubra UUID Date Path IdMapper 0.3 API'
+'Akubra UUID Date Path IdMapper 0.4 API'
 -linkoffline
 'http://download.oracle.com/javase/6/docs/api' '/Users/eddie/Documents/workspace/uuid-datepath-idmapper/target/checkout/target/javadoc-bundle-options'
 -use
 -version
 -windowtitle
-'Akubra UUID Date Path IdMapper 0.3 API'
+'Akubra UUID Date Path IdMapper 0.4 API'
