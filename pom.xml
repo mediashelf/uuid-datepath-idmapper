@@ -110,7 +110,7 @@
   <distributionManagement>
     <site>
       <id>gh-pages</id>
-      <url>gitsite:git@github-mshlf/mediashelf/${project.artifactId}.git</url>
+      <url>gitsite:git@github/mediashelf/${project.artifactId}.git</url>
     </site>
   </distributionManagement>
   
