@@ -128,6 +128,21 @@ public class UUIDDatePathIdMapperTest {
         assertEquals(fallbackId, externalId.toString());
 	}
 
+	@Test
+    public void testUUIDGeneration() throws Exception {
+        EthernetAddress addr = new EthernetAddress("01:aa:75:ed:71:a1");
+        MutableUUIDTimer timer = new MutableUUIDTimer(new Random(System.currentTimeMillis()), null);
+        UUID1Generator gen = new UUID1Generator(addr, timer);
+
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        df.setTimeZone(TimeZone.getTimeZone("UTC"));
+        Date d = df.parse("2011-12-31");
+        UUID uuid = gen.generate(d.getTime());
+
+        assertEquals(d.getTime(), getDate(uuid).getTime());
+        assertEquals(addr.toString(), getNode(uuid));
+    }
+
 	/**
 	 * Convert a Java Date into a ISO-8601 UTC date string
 	 * 
@@ -203,21 +218,6 @@ public class UUIDDatePathIdMapperTest {
         }
         return formatter.parse(dateString);
     }
-	
-	@Test
-	public void testUUIDGeneration() throws Exception {
-		EthernetAddress addr = new EthernetAddress("01:aa:75:ed:71:a1");
-		MutableUUIDTimer timer = new MutableUUIDTimer(new Random(System.currentTimeMillis()), null);
-		UUID1Generator gen = new UUID1Generator(addr, timer);
-		
-		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-		df.setTimeZone(TimeZone.getTimeZone("UTC"));
-		Date d = df.parse("2011-12-31");
-		UUID uuid = gen.generate(d.getTime());
-		
-		assertEquals(d.getTime(), getDate(uuid).getTime());
-		assertEquals(addr.toString(), getNode(uuid));
-	}
 	
 	private Date getDate(UUID uuid) {
     	if (uuid.version() != 1) {
