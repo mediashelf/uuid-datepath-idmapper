@@ -18,11 +18,7 @@
  */
 package com.yourmediashelf.fedora.akubra;
 
-import java.io.UnsupportedEncodingException;
-
 import java.net.URI;
-import java.net.URLDecoder;
-import java.net.URLEncoder;
 
 import org.akubraproject.map.IdMapper;
 
@@ -31,7 +27,7 @@ import com.twmacinta.util.MD5;
 
 /**
  * Implementation of org.fcrepo.server.storage.lowlevel.akubra.HashPathIdMapper 
- * that takes an IdMapperPrefixer as a constructor argument.
+ * that takes an {@link IdMapperPrefixer} as a constructor argument.
  * 
  * Provides a hash-based <code>file:</code> mapping for any URI.
  * <p>
@@ -101,14 +97,25 @@ public class PrefixingHashPathIdMapper
     /**
      * Creates an instance that will use the given pattern.
      *
-     * @param pathPattern the pattern to use, possibly <code>null</code> or "".
-     * @param prefixer The IdMapperPrefixer to use, or <code>null</code>.
+     * @param pattern the path pattern to use, possibly <code>null</code> or "".
+     * @param prefixer The {@link IdMapperPrefixer} to use, or <code>null</code>.
      * 
      * @throws IllegalArgumentException if the pattern is invalid.
      */
     public PrefixingHashPathIdMapper(String pattern, IdMapperPrefixer prefixer) {
         this.pattern = validatePattern(pattern);
         this.prefixer = prefixer;
+    }
+    
+    /**
+     * Convenience constructor that uses a <code>null</null> {@link IdMapperPrefixer} 
+     * and therefore behaves identically to 
+     * <code>org.fcrepo.server.storage.lowlevel.akubra.HashPathIdMapper</code>.
+     *
+     * @param pattern the path pattern to use, possibly <code>null</code> or "".
+     */
+    public PrefixingHashPathIdMapper(String pattern) {
+        this(pattern, null);
     }
 
     public URI getExternalId(URI internalId) throws NullPointerException {
@@ -120,7 +127,7 @@ public class PrefixingHashPathIdMapper
             encodedURI = fullPath;
         else
             encodedURI = fullPath.substring(i + 1);
-        return URI.create(decode(encodedURI));
+        return URI.create(IdMapperUtil.decode(encodedURI));
     }
 
     public URI getInternalId(URI externalId) throws NullPointerException {
@@ -128,7 +135,7 @@ public class PrefixingHashPathIdMapper
             throw new NullPointerException();
         }
         String uri = externalId.toString();
-        return URI.create(internalScheme + ":" + getPath(uri) + encode(uri));
+        return URI.create(internalScheme + ":" + getPath(uri) + IdMapperUtil.encode(uri));
     }
 
     public String getInternalPrefix(String externalPrefix)
@@ -138,7 +145,7 @@ public class PrefixingHashPathIdMapper
         }
         // we can only do this if pattern is ""
         if (pattern.length() == 0) {
-            return internalScheme + ":" + encode(externalPrefix);
+            return internalScheme + ":" + IdMapperUtil.encode(externalPrefix);
         } else {
             return null;
         }
@@ -176,59 +183,6 @@ public class PrefixingHashPathIdMapper
     // computes the md5 and returns a 32-char lowercase hex string
     private static String getHash(String uri) {
         return MD5.asHex(new MD5(uri).Final());
-    }
-
-    private static String encode(String uri) {
-        // encode char-by-char because we only want to borrow
-        // URLEncoder.encode's behavior for some characters
-        StringBuilder out = new StringBuilder();
-        for (int i = 0; i < uri.length(); i++) {
-            char c = uri.charAt(i);
-            if (c >= 'a' && c <= 'z') {
-                out.append(c);
-            } else if (c >= '0' && c <= '9') {
-                out.append(c);
-            } else if (c >= 'A' && c <= 'Z') {
-                out.append(c);
-            } else if (c == '-' || c == '=' || c == '(' || c == ')'
-                    || c == '[' || c == ']' || c == ';') {
-                out.append(c);
-            } else if (c == ':') {
-                out.append("%3A");
-            } else if (c == ' ') {
-                out.append("%20");
-            } else if (c == '+') {
-                out.append("%2B");
-            } else if (c == '_') {
-                out.append("%5F");
-            } else if (c == '*') {
-                out.append("%2A");
-            } else if (c == '.') {
-                if (i == uri.length() - 1) {
-                    out.append("%2E");
-                } else {
-                    out.append(".");
-                }
-            } else {
-                try {
-                    out.append(URLEncoder.encode("" + c, "UTF-8"));
-                } catch (UnsupportedEncodingException wontHappen) {
-                    throw new RuntimeException(wontHappen);
-                }
-            }
-        }
-        return out.toString();
-    }
-
-    private static String decode(String encodedURI) {
-        if (encodedURI.endsWith("%2E")) {
-            encodedURI = encodedURI.substring(0, encodedURI.length() - 3) + ".";
-        }
-        try {
-            return URLDecoder.decode(encodedURI, "UTF-8");
-        } catch (UnsupportedEncodingException wontHappen) {
-            throw new RuntimeException(wontHappen);
-        }
     }
 
     private static String validatePattern(String pattern) {
