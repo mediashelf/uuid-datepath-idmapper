@@ -9,7 +9,7 @@
 
   <groupId>com.yourmediashelf.fedora.akubra</groupId>
   <artifactId>uuid-datepath-idmapper</artifactId>
-  <version>0.5</version>
+  <version>0.6-SNAPSHOT</version>
   <packaging>jar</packaging>
   <name>Akubra UUID Date Path IdMapper</name>
   <url>http://mediashelf.github.com/${project.artifactId}</url>
@@ -135,7 +135,7 @@
     <developerConnection>scm:git:git@github.com:mediashelf/${project.artifactId}.git
     </developerConnection>
     <url>http://github.com/mediashelf/${project.artifactId}</url>
-    <tag>uuid-datepath-idmapper-0.5</tag>
+    <tag>HEAD</tag>
   </scm>
 
   <prerequisites>
