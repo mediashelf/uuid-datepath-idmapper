@@ -355,7 +355,7 @@
         <executions>
           <execution>
             <id>jug-dependency</id>
-            <phase>package</phase>
+            <phase>install</phase>
             <goals>
               <goal>shade</goal>
             </goals>
@@ -371,7 +371,7 @@
           </execution>
           <execution>
             <id>all-dependencies</id>
-            <phase>package</phase>
+            <phase>install</phase>
             <goals>
               <goal>shade</goal>
             </goals>
