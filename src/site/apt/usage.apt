@@ -6,10 +6,10 @@
 
 Using uuid-datepath-idmapper with Fedora
 
-    uuid-datepath-idmapper has been tested against Fedora 3.5, but should work 
-with 3.4.x. In all cases, Fedora must be configured to use Akubra as the low-level 
-storage module (the default). uuid-datepath-idmapper is not compatible with the 
-legacy low-level storage module.
+    uuid-datepath-idmapper has been tested against Fedora 3.5 and 3.6.1, but 
+should work with 3.4.x. In all cases, Fedora must be configured to use Akubra as 
+the low-level storage module (the default). uuid-datepath-idmapper is not 
+compatible with the legacy low-level storage module.
 
 * Installation
 
