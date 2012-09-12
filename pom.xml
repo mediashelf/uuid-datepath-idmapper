@@ -19,7 +19,7 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <slf4j.version>1.7.0</slf4j.version>
+    <slf4j.version>1.6.6</slf4j.version>
   </properties>
 
   <dependencyManagement>
@@ -165,6 +165,24 @@
     <pluginManagement>
       <plugins>
         <plugin>
+          <groupId>com.github.github</groupId>
+          <artifactId>downloads-maven-plugin</artifactId>
+          <version>0.6</version>
+          <executions>
+            <execution>
+              <goals>
+                <goal>upload</goal>
+              </goals>
+              <phase>deploy</phase>
+            </execution>
+          </executions>
+          <configuration>
+            <description>${project.version} release of ${project.name}</description>
+            <override>true</override>
+            <includeAttached>true</includeAttached>
+          </configuration>
+        </plugin>
+        <plugin>
           <artifactId>maven-assembly-plugin</artifactId>
           <version>2.3</version>
         </plugin>
@@ -293,6 +311,10 @@
       </plugins>
     </pluginManagement>
     <plugins>
+      <plugin>
+        <groupId>com.github.github</groupId>
+        <artifactId>downloads-maven-plugin</artifactId>
+      </plugin>
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
       </plugin>
